@@ -25,7 +25,8 @@ batch_size = 32
 class MLModel:
     def __init__(self):
         self.inputs = keras.Input(shape=(28, 28, 1))
-        self.x = self.conv_module(self.inputs, f=32, ks=(3, 3), s=(1, 1), p="same", a="relu", kr=l2(0.001), br=l2(0.001), do=None, mp=True)
+        self.x = self.conv_module(self.inputs, f=32, ks=(3, 3), s=(1, 1), p="same", a="relu", kr=l2(0.001), br=l2(0.001), do=0.3, mp=True)
+        self.x = self.conv_module(self.inputs, f=64, ks=(3, 3), s=(1, 1), p="same", a="relu", kr=l2(0.001), br=l2(0.001), do=0.3, mp=True)
         self.x = self.flatten_module(self.x)
         self.x = self.dense_module(self.x, u=10, a="softmax", kr=l2(0.001), br=l2(0.001))
 
@@ -54,7 +55,7 @@ class MLModel:
 def train():
     mlmodel = MLModel()
     mlmodel.define_model()
-    mlmodel.compile_model(optimizer=Adam(lr=0.002), loss="categorical_crossentropy", metrics=['accuracy'])
+    mlmodel.compile_model(optimizer=Adam(lr=0.00008), loss="categorical_crossentropy", metrics=['accuracy'])
 
     (trainX, trainY), (testX, testY) = mnist.load_data()
     trainX = trainX.reshape((trainX.shape[0], 28, 28, 1)).astype("float32")
@@ -65,7 +66,7 @@ def train():
     trainY = to_categorical(trainY)
     testY = to_categorical(testY)
 
-    mlmodel.model.fit(x=trainX, y=trainY, batch_size=None, epochs=15, verbose=1, use_multiprocessing=True)
+    mlmodel.model.fit(x=trainX, y=trainY, batch_size=None, epochs=30, verbose=1, use_multiprocessing=True)
     mlmodel.model.save("NumRoll.h5")
 
 if __name__ == "__main__":
