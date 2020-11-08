@@ -1,36 +1,27 @@
 import sys
+import keyboard
 
 from PyQt5 import QtCore, QtGui, uic, QtWidgets 
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QPushButton,QAction, QShortcut
+from PyQt5.QtGui import QIcon, QKeySequence
 from PyQt5.QtCore import Qt,pyqtSlot
 
 
 class Canvas(QtWidgets.QMainWindow):
-    def __init__(self):
+    def __init__(self, max_index):
         super().__init__()
 
         self.label = QtWidgets.QLabel()
-        whiteboard = QtGui.QPixmap(900,900)
-        self.label.setPixmap(whiteboard)
+        self.whiteboard = QtGui.QPixmap(1120,1120)
+        self.setStyleSheet("background-color: black;")
+        self.label.setPixmap(self.whiteboard)
         self.setCentralWidget(self.label)
-#        self.mousePressed()
-#        self.mouseReleased()
-#        self.draw()
-     
+        self.max_index = max_index
+        self.count = 0
         self.last_x, self.last_y = None, None
-
-#    def draw(self):
-#        painter = QtGui.QPainter(self.label.pixmap())
-#        pen = QtGui.QPen()
-#        pen.setWidth(40)
-#        pen.setColor(QtGui.QColor('red'))
-#        painter.setPen(pen)
-#        painter.drawPoint(450,450)
-#        painter.end() 
     
     def mouseMoveEvent(self, e):
         if self.last_x is None:
@@ -55,25 +46,39 @@ class Canvas(QtWidgets.QMainWindow):
         self.last_x = None
         self.last_y = None
 
-    def saveImage():
-        pass
+    def save(self):
+        p = QWidget.grab(self)
+        q = QtGui.QPixmap.toImage(p)
+        fileName = str(self.count)+".jpeg"
+        q.save(fileName)
+        print("image saved!")
         
-def window():
+
+        if self.count == self.max_index-1:
+            self.close()
+        else:
+            self.count += 1
+            #self.whiteboard = QtGui.QPixmap(1120,1120)
+            #self.setStyleSheet("background-color: black;")
+            #self.update()
+            self.label.clear()
+            self.label.setPixmap(self.whiteboard)
+            self.setCentralWidget(self.label)
+
+def main():
+
     app = QtWidgets.QApplication(sys.argv)
-    window = Canvas()
-
-    button = QtWidgets.QPushButton(window)
-    button.setText("finish")
-    button.move(60,15)
-    button.clicked.connect(button_pushed)
-
-    window.show()
-
-    sys.exit(app.exec_())
-
-def button_pushed():
-    print("ready to quit")
 
     
+
+    window = Canvas(5)
+    window.shortcut_save = QShortcut(QKeySequence('Ctrl+S'),window)
+    window.shortcut_save.activated.connect(window.save)
+    window.show()
+    app.exec_()
+
+
+    
+    
 if __name__ == "__main__":
-    window()
+    main()
