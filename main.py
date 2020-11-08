@@ -61,10 +61,11 @@ def compare(passcode):
     for i in c.fetchall():
         code.append(str(i[0]))
     a = "".join(code)
-    print(a)
+    print("You have entered: "+a)
 
     if a == passcode:
         os.system("vim homework.txt")
+        sys.exit()
     elif a == "42069":
         os.system("vlc RickRoll.mp4")
     else:
