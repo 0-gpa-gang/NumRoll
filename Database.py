@@ -12,13 +12,12 @@ def create():
 
     c.execute("""INSERT INTO image (path)
             VALUES
-            ('image/1.jpg'),
-            ('image/2.jpg'),
-            ('image/3.jpg'),
-            ('image/4.jpg'),
-            ('image/5.jpg');""")
+            ('image/0.jpeg'),
+            ('image/1.jpeg'),
+            ('image/2.jpeg'),
+            ('image/3.jpeg'),
+            ('image/4.jpeg');""")
     conn.commit()
 
-
-
-create()
+if __name__ == "__main__":
+    create()

@@ -42,4 +42,4 @@ def special_case():
     for row in c.fetchall():
         special += str(row[1])
     if special == "42069":
-        os.system("open RickRoll.mp4")  # change with system
+        os.system("vlc RickRoll.mp4")  # change with system
