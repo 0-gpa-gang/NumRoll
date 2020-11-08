@@ -53,16 +53,7 @@ class Canvas(QtWidgets.QMainWindow):
         print("image saved!")
         
 
-        #if self.count == self.max_index-1:
         self.close()
-        #else:
-        #    self.count += 1
-            #self.whiteboard = QtGui.QPixmap(1120,1120)
-            #self.setStyleSheet("background-color: black;")
-            #self.update()
-        #    self.label.clear()
-        #    self.label.setPixmap(self.whiteboard)
-        #    self.setCentralWidget(self.label)
 
 def save_all(lst_wind):
     for i in lst_wind:
@@ -70,12 +61,6 @@ def save_all(lst_wind):
 
 def canvases():
     app = QtWidgets.QApplication(sys.argv)
-
-    #window = Canvas(5)
-    #window.shortcut_save = QShortcut(QKeySequence('Ctrl+S'),window)
-    #window.shortcut_save.activated.connect(window.save)
-    #window.show()
-    #app.exec_()
  
     windows = []
     shortcuts = []

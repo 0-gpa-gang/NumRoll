@@ -67,7 +67,7 @@ def compare(passcode):
         os.system("vim homework.txt")
         sys.exit()
     elif a == "42069":
-        os.system("vlc RickRoll.mp4")
+        os.system("vlc env/RickRoll.mp4")
     else:
         print("Wrong code")
         os.system("python3 error.py")
