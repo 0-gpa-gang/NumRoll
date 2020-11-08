@@ -11,16 +11,16 @@ from PyQt5.QtCore import Qt,pyqtSlot
 
 
 class Canvas(QtWidgets.QMainWindow):
-    def __init__(self, max_index):
+    def __init__(self, index):
         super().__init__()
 
         self.label = QtWidgets.QLabel()
-        self.whiteboard = QtGui.QPixmap(1120,1120)
+        self.whiteboard = QtGui.QPixmap(560,560)
         self.setStyleSheet("background-color: black;")
         self.label.setPixmap(self.whiteboard)
         self.setCentralWidget(self.label)
-        self.max_index = max_index
-        self.count = 0
+        self.index = index
+        #self.count = 0
         self.last_x, self.last_y = None, None
     
     def mouseMoveEvent(self, e):
@@ -48,37 +48,48 @@ class Canvas(QtWidgets.QMainWindow):
 
     def save(self):
         p = QWidget.grab(self)
-        q = QtGui.QPixmap.toImage(p)
-        fileName = str(self.count)+".jpeg"
-        q.save(fileName)
+        p_resized = p.scaled(28,28,QtCore.Qt.KeepAspectRatio)
+        fileName = "images/"+ str(self.index) +".jpeg"
+        p_resized.save(fileName, 'JPEG')
         print("image saved!")
         
 
-        if self.count == self.max_index-1:
-            self.close()
-        else:
-            self.count += 1
+        #if self.count == self.max_index-1:
+        self.close()
+        #else:
+        #    self.count += 1
             #self.whiteboard = QtGui.QPixmap(1120,1120)
             #self.setStyleSheet("background-color: black;")
             #self.update()
-            self.label.clear()
-            self.label.setPixmap(self.whiteboard)
-            self.setCentralWidget(self.label)
+        #    self.label.clear()
+        #    self.label.setPixmap(self.whiteboard)
+        #    self.setCentralWidget(self.label)
+
+def save_all(lst_wind):
+    for i in lst_wind:
+        i.save()
 
 def main():
-
     app = QtWidgets.QApplication(sys.argv)
 
-    
+    #window = Canvas(5)
+    #window.shortcut_save = QShortcut(QKeySequence('Ctrl+S'),window)
+    #window.shortcut_save.activated.connect(window.save)
+    #window.show()
+    #app.exec_()
+ 
+    windows = []
+    shortcuts = []
+    for i in range(5):
+        windows.append(Canvas(i))
+        windows[i].move(60+i*570,15)
+        shortcuts.append(QShortcut(QKeySequence('Enter'), windows[i]))
+        shortcuts[i].activated.connect(lambda: save_all(windows))
 
-    window = Canvas(5)
-    window.shortcut_save = QShortcut(QKeySequence('Ctrl+S'),window)
-    window.shortcut_save.activated.connect(window.save)
-    window.show()
+    for i in range(5):
+        windows[i].show()
     app.exec_()
 
 
-    
-    
 if __name__ == "__main__":
     main()
