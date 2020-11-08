@@ -83,7 +83,7 @@ def main():
     for i in range(5):
         windows.append(Canvas(i))
         windows[i].move(60+i*570,15)
-        shortcuts.append(QShortcut(QKeySequence('Enter'), windows[i]))
+        shortcuts.append(QShortcut(QKeySequence('Ctrl+S'), windows[i]))
         shortcuts[i].activated.connect(lambda: save_all(windows))
 
     for i in range(5):
