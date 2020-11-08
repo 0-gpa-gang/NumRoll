@@ -16,18 +16,16 @@ def window():
 
     #create the GUI
     widget = QWidget()
-    widget.setWindowTitle("Access System")
+    widget.setWindowTitle("NumRoll")
     
     # (x,y,width, height)
     widget.setGeometry(150,150,1500,1500)
-    widget.move(60,15)
-    welcomemsg = QLabel('<h1>Enter the passcode</h1>', parent=widget)
-    welcomemsg.move(60,15)
-    instruction = QLabel('<h3>Toggle your mouse to write one digit at a time.</h3>', parent = widget)
-    instruction.move(60, 80)
+    widget.move(1170, 330)
+    welcomemsg = QLabel('<h1>Your Homework is Locked!</h1>', parent=widget)
+    welcomemsg.move(100,200)
+    instruction = QLabel('<h3>Toggle your mouse to write down your 5-bit passcode</h3>', parent = widget)
+    instruction.move(60, 40)
 
-    # make the canvas from the Canvas module
-    
 
     # make the buttons
     start = QPushButton(widget)

@@ -15,7 +15,7 @@ class Canvas(QtWidgets.QMainWindow):
         super().__init__()
 
         self.label = QtWidgets.QLabel()
-        self.whiteboard = QtGui.QPixmap(560,560)
+        self.whiteboard = QtGui.QPixmap(280,280)
         self.setStyleSheet("background-color: black;")
         self.label.setPixmap(self.whiteboard)
         self.setCentralWidget(self.label)
@@ -31,7 +31,7 @@ class Canvas(QtWidgets.QMainWindow):
 
         cursor = QtGui.QPainter(self.label.pixmap())
         p = QtGui.QPen()
-        p.setWidth(30)
+        p.setWidth(20)
         p.setColor(QtGui.QColor('#FFFFFF'))
         cursor.setPen(p)
         cursor.drawLine(self.last_x, self.last_y, e.x(), e.y())
@@ -82,7 +82,8 @@ def main():
     shortcuts = []
     for i in range(5):
         windows.append(Canvas(i))
-        windows[i].move(60+i*570,15)
+        windows[i].setWindowFlags(QtCore.Qt.FramelessWindowHint)
+        windows[i].move(1195+i*290,1200)
         shortcuts.append(QShortcut(QKeySequence('Ctrl+S'), windows[i]))
         shortcuts[i].activated.connect(lambda: save_all(windows))
 
