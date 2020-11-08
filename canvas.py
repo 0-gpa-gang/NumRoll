@@ -82,7 +82,7 @@ def main():
     for i in range(5):
         windows.append(Canvas(i))
         windows[i].setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        windows[i].move(1195+i*290,1200)
+        windows[i].move(1195+i*290,700)
         shortcuts.append(QShortcut(QKeySequence('Ctrl+S'), windows[i]))
         shortcuts[i].activated.connect(lambda: save_all(windows))
 
