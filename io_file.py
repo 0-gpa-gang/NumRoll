@@ -19,13 +19,20 @@ def read_from_db():
 def output_to_db(classify):
     conn = sqlite3.connect("image.db")
     c = conn.cursor()
-    for i in classify:
-        c.execute("INSERT INTO image (classifier) VALUES (?)", i)
+    total = read_from_db()
+    for i in range(len(classify)):
+        num = classify[i]
+        location = total[i]
+        c.execute("UPDATE image SET classifier = (?) WHERE path = (?)", (num, location))
         conn.commit()
-    hi = []
+    # if want to see the classified result in a printed list, turn docstring into code
+    """
+    classified = []
+    c.execute("SELECT * FROM image")
     for row in c.fetchall():
-        hi.append(row[1])
-    print(hi)
+        classified.append(row[1])
+    print(classified)
+    """
 
 def special_case():
     conn = sqlite3.connect("image.db")
@@ -33,9 +40,6 @@ def special_case():
     c.execute("SELECT * FROM image")
     special = ""
     for row in c.fetchall():
-        special += row[1]
+        special += str(row[1])
     if special == "42069":
-        os.system("vlc RickRoll.mp4")
-
-
-print(read_from_db())
+        os.system("open RickRoll.mp4")  # change with system
