@@ -1,5 +1,4 @@
 import sys
-import keyboard
 
 from PyQt5 import QtCore, QtGui, uic, QtWidgets 
 from PyQt5.QtWidgets import QApplication
