@@ -4,7 +4,7 @@ from tensorflow import keras
 from tensorflow.keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten
 from tensorflow.keras.regularizers import l1, l2
 from tensorflow.keras.datasets import mnist
-from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers import Adam, SGD
 from tensorflow.keras.utils import to_categorical
 from PIL import Image
 import matplotlib.pyplot as plt
@@ -55,7 +55,7 @@ class MLModel:
 def train():
     mlmodel = MLModel()
     mlmodel.define_model()
-    mlmodel.compile_model(optimizer=Adam(lr=0.00008), loss="categorical_crossentropy", metrics=['accuracy'])
+    mlmodel.compile_model(optimizer=SGD(lr=0.0005, momentum=0.9), loss="categorical_crossentropy", metrics=['accuracy'])
 
     (trainX, trainY), (testX, testY) = mnist.load_data()
     trainX = trainX.reshape((trainX.shape[0], 28, 28, 1)).astype("float32")
