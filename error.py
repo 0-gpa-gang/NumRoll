@@ -13,7 +13,7 @@ app = QApplication(sys.argv)
 
 failWindow = QWidget() 
 failWindow.setWindowTitle("Error!")
-failWindow.setGeometry(150,150,600,300)
+failWindow.setGeometry(150,150,800,300)
 failWindow.move(560,560)
 failmsg = QLabel('<h2>WRONG CODE! DENIED ACCESS</h2>', parent = failWindow)
 failmsg.move(60,60)

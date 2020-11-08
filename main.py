@@ -24,18 +24,20 @@ def window():
     widget.setWindowTitle("NumRoll")
     
     # (x,y,width, height)
-    widget.setGeometry(150,150,1024,768)
-    widget.move(560, 240)
+    widget.setGeometry(150,150,1500,700)
+    widget.move(1170, 330)
     welcomemsg = QLabel('<h1>Your Homework is Locked!</h1>', parent=widget)
-    welcomemsg.move(100,200)
+    welcomemsg.move(350,60)
     instruction = QLabel('<h3>Toggle your mouse to write down your 5-bit passcode</h3>', parent = widget)
-    instruction.move(60, 40)
-
+    instruction.move(250,120)
+    instruction2 = QLabel('<h3>When you are done, Press "Ctrl+S" to proceed.</h3>', parent = widget)
+    instruction2.move(340,600)
 
     # make the buttons
     start = QPushButton(widget)
+    start.setStyleSheet("background-color:red")
     start.setText("Click here to start.")
-    start.move(65,150)
+    start.move(600,180)
     start.clicked.connect(start_pushed)
 
     # show the window
