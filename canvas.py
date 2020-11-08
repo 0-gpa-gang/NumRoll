@@ -15,7 +15,7 @@ class Canvas(QtWidgets.QMainWindow):
 
         self.label = QtWidgets.QLabel()
         self.whiteboard = QtGui.QPixmap(280,280)
-        self.setStyleSheet("background-color: black;")
+        #self.setStyleSheet("background-color: black;")
         self.label.setPixmap(self.whiteboard)
         self.setCentralWidget(self.label)
         self.index = index
@@ -47,7 +47,7 @@ class Canvas(QtWidgets.QMainWindow):
 
     def save(self):
         p = QWidget.grab(self)
-        p_resized = p.scaled(28,28,QtCore.Qt.KeepAspectRatio)
+        p_resized = p.scaled(28,28,QtCore.Qt.KeepAspectRatio, transformMode=QtCore.Qt.SmoothTransformation)
         fileName = "image/"+ str(self.index) +".jpeg"
         p_resized.save(fileName, 'JPEG')
         print("image saved!")
@@ -55,7 +55,14 @@ class Canvas(QtWidgets.QMainWindow):
 
         #if self.count == self.max_index-1:
         self.close()
-
+        #else:
+        #    self.count += 1
+            #self.whiteboard = QtGui.QPixmap(1120,1120)
+            #self.setStyleSheet("background-color: black;")
+            #self.update()
+        #    self.label.clear()
+        #    self.label.setPixmap(self.whiteboard)
+        #    self.setCentralWidget(self.label)
 
 def save_all(lst_wind):
     for i in lst_wind:
@@ -63,13 +70,19 @@ def save_all(lst_wind):
 
 def canvases():
     app = QtWidgets.QApplication(sys.argv)
+
+    #window = Canvas(5)
+    #window.shortcut_save = QShortcut(QKeySequence('Ctrl+S'),window)
+    #window.shortcut_save.activated.connect(window.save)
+    #window.show()
+    #app.exec_()
  
     windows = []
     shortcuts = []
     for i in range(5):
         windows.append(Canvas(i))
         windows[i].setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        windows[i].move(1195+i*290,700)
+        windows[i].move(340+i*300,400)
         shortcuts.append(QShortcut(QKeySequence('Ctrl+S'), windows[i]))
         shortcuts[i].activated.connect(lambda: save_all(windows))
 

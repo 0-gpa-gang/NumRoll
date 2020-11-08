@@ -1,7 +1,7 @@
 import numpy as np
 import tensorflow as tf
 from tensorflow import keras
-from tensorflow.keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten
+from tensorflow.keras.layers import Dense, Dropout, Conv2D, MaxPooling2D, Flatten, BatchNormalization
 from tensorflow.keras.regularizers import l1, l2
 from tensorflow.keras.datasets import mnist
 from tensorflow.keras.optimizers import Adam, SGD
@@ -27,9 +27,10 @@ mixed_precision.set_policy(policy)
 class MLModel:
     def __init__(self):
         self.inputs = keras.Input(shape=(28, 28, 1))
-        self.x = self.conv_module(self.inputs, f=32, ks=(3, 3), s=(1, 1), p="same", a="relu", kr=l2(0.001), br=l2(0.001), do=0.3, mp=True)
-        self.x = self.conv_module(self.inputs, f=128, ks=(3, 3), s=(1, 1), p="same", a="relu", kr=l2(0.001), br=l2(0.001), do=0.3, mp=True)
-        self.x = self.conv_module(self.inputs, f=512, ks=(3, 3), s=(1, 1), p="same", a="relu", kr=l2(0.001), br=l2(0.001), do=0.4, mp=True)
+        self.x = self.conv_module(self.inputs, f=6, ks=(5, 5), s=(1, 1), p="same", a="relu", kr=l2(0.001), br=l2(0.001), do=0.4, mp=True)
+        self.x = BatchNormalization(-1)(self.x)
+        self.x = self.conv_module(self.inputs, f=16, ks=(3, 3), s=(1, 1), p="same", a="relu", kr=l2(0.001), br=l2(0.001), do=0.4, mp=True)
+        #self.x = self.conv_module(self.inputs, f=32, ks=(3, 3), s=(1, 1), p="same", a="relu", kr=l2(0.001), br=l2(0.001), do=0.4, mp=True)
         
         self.x = self.flatten_module(self.x)
         #self.x = self.dense_module(self.x, u=50, a="sigmoid", kr=l2(0.001), br=l2(0.001))
@@ -61,7 +62,7 @@ class MLModel:
 def train():
     mlmodel = MLModel()
     mlmodel.define_model()
-    mlmodel.compile_model(optimizer=SGD(lr=0.0004, momentum=0.9), loss="categorical_crossentropy", metrics=['accuracy'])
+    mlmodel.compile_model(optimizer=SGD(lr=0.001, momentum=0.9), loss="categorical_crossentropy", metrics=['accuracy'])
 
     (trainX, trainY), (testX, testY) = mnist.load_data()
     trainX = trainX.reshape((trainX.shape[0], 28, 28, 1)).astype("float32")
@@ -72,7 +73,7 @@ def train():
     trainY = to_categorical(trainY)
     testY = to_categorical(testY)
 
-    mlmodel.model.fit(x=trainX, y=trainY, batch_size=None, epochs=30, verbose=1, use_multiprocessing=True)
+    mlmodel.model.fit(x=trainX, y=trainY, batch_size=None, epochs=20, verbose=1, validation_data=(testX, testY),  use_multiprocessing=True)
     mlmodel.model.save("NumRoll.h5")
 
 if __name__ == "__main__":
